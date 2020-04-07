@@ -208,12 +208,23 @@ along with Google Play Services and RxJava.
 ```groovy
 dependencies {
     ...
-    compile 'pl.charmas.android:android-reactive-location2:2.1@aar'
-    compile 'com.google.android.gms:play-services-location:11.0.4' //you can use newer GMS version if you need
-    compile 'com.google.android.gms:play-services-places:11.0.4'
-    compile 'io.reactivex:rxjava:2.0.5' //you can override RxJava version if you need
+    implementation 'com.github.MarsXan:Android-ReactiveLocation:2.1.0'
+    
+    implementation 'com.google.android.gms:play-services-location:11.0.4' //you can use newer GMS version if you need
+    implementation 'com.google.android.gms:play-services-places:11.0.4'
+    implementation 'io.reactivex:rxjava:2.0.5' //you can override RxJava version if you need
 }
+
+
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
 ```
+
+
 
 ### Maven
 
