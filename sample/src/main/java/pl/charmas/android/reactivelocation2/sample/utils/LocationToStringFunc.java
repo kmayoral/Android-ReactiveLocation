@@ -8,7 +8,7 @@ public class LocationToStringFunc implements Function<Location, String> {
     @Override
     public String apply(Location location) {
         if (location != null)
-            return location.getLatitude() + " " + location.getLongitude() + " (" + location.getAccuracy() + ")";
+            return location.getLatitude() + " " + location.getLongitude() + " (" + location.getAccuracy() + ")" + " -- " + location.getTime();
         return "no location available";
     }
 }

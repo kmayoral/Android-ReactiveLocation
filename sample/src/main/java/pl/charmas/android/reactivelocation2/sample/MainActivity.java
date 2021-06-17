@@ -79,8 +79,8 @@ public class MainActivity extends BaseActivity {
 
         final LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setNumUpdates(5)
-                .setInterval(100);
+                .setFastestInterval(250)
+                .setInterval(250);
         locationUpdatesObservable = locationProvider
                 .checkLocationSettings(
                         new LocationSettingsRequest.Builder()
