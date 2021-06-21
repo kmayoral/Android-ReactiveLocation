@@ -75,12 +75,14 @@ public class LocationUpdatesObservableOnSubscribe extends BaseLocationObservable
         @Override
         public void onLocationAvailability(LocationAvailability locationAvailability) {
             super.onLocationAvailability(locationAvailability);
-            if (!locationAvailability.isLocationAvailable()) {
-                final ObservableEmitter<? super Location> observer = weakRef.get();
-                if (observer != null && !observer.isDisposed()) {
-                    observer.onError(new LocationNotAvailableException());
-                }
-            }
+            // Keith edit: We don't care to notify the downstream with an error if location is not currently available
+            // as the previous version of this library did not do so
+//            if (!locationAvailability.isLocationAvailable()) {
+//                final ObservableEmitter<? super Location> observer = weakRef.get();
+//                if (observer != null && !observer.isDisposed()) {
+//                    observer.onError(new LocationNotAvailableException());
+//                }
+//            }
         }
     }
 }
