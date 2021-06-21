@@ -18,6 +18,9 @@ import pl.charmas.android.reactivelocation2.LocationNotAvailableException;
 import pl.charmas.android.reactivelocation2.observables.ObservableContext;
 import pl.charmas.android.reactivelocation2.observables.ObservableFactory;
 
+/**
+ * This file was modified from the original pl.charmas.android and marxsan fork that this repo is based on.
+ */
 
 @SuppressWarnings("MissingPermission")
 public class LocationUpdatesObservableOnSubscribe extends BaseLocationObservableOnSubscribe<Location> {

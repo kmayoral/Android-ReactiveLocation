@@ -1,41 +1,60 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
+apply plugin: 'co.bird.gradle.version'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion rootProject.ext.compileSdkVersion
 
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion rootProject.ext.targetSdkVersion
-    }
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion rootProject.ext.targetSdkVersion
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+  buildTypes {
+    debug {
+      minifyEnabled = false
     }
+    release {
+      minifyEnabled = true
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
-
-//TODO: local maven deployment
 
 dependencies {
-    api 'com.google.android.gms:play-services-location:18.0.0'
-    api 'com.google.android.gms:play-services-places:17.0.0'
-    api 'io.reactivex.rxjava2:rxjava:2.2.21'
+  api 'com.google.android.gms:play-services-location:18.0.0'
+  api 'com.google.android.gms:play-services-places:17.0.0'
+  api 'io.reactivex.rxjava2:rxjava:2.2.21'
 }
+// Because the components are created only during the afterEvaluate phase, you must
+// configure your publications using the afterEvaluate() lifecycle method.
+project.afterEvaluate {
+  publishing {
+    publications {
+      // Creates a Maven publication called "release".
+      release(MavenPublication) {
+        // Applies the component for the release build variant.
+        from components.release
 
-// Comment this to deploy to local maven repository
-apply from: '../maven_push.gradle'
-
-
-//TODO: clean up
-//This is for local maven deployment
-
-//apply plugin: 'maven'
-//uploadArchives {
-//    repositories {
-//        mavenDeployer {
-//            repository url: 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
-//        }
-//    }
-//}
-//task install(dependsOn: uploadArchives)
+        // You can customize attributes of the publication here or in module's build.gradle file (if you save this as script and include it build.gradle file, then you can just replicate this whole block there only with changed fields).
+        groupId = GROUP
+        artifactId = ARTIFACT_ID
+        version = VERSION_NAME
+      }
+    }
+    repositories {
+      maven {
+        url = uri('https://artifactory.svc.bird.co/artifactory/internal')
+        credentials {
+          username = System.getenv('ARTIFACTORY_API_USER')
+          password = System.getenv('ARTIFACTORY_API_KEY')
+        }
+      }
+    }
+  }
+}
